@@ -164,9 +164,15 @@ Notice:
 
 1、暴力解法
 
-2、其实是两个递增序列,若中间值>最右边的值,说明中间值在左边数组里,需要left左移
+2、可以看成是两个递增序列,找到两者之间的分段点,分段点后的第一位数则为最小数.
 
-若中间值<最右边的值,说明右边的值不是最小值,left—1
+采用二分法:
+
+若中间值>最右边的值,说明分段点在后半截,区间取后半段,left = mid +1;
+
+若中间值<最右边的值,说明分段点在前半截,区间取前半段,right = mid;
+
+若中间值和右边值相等,则left = left -1,再做判断
 
 > 把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。输入一个递增排序的数组的一个旋转，输出旋转数组的最小元素。例如，数组 [3,4,5,1,2] 为 [1,2,3,4,5] 的一个旋转，该数组的最小值为1。  
 >
@@ -181,17 +187,20 @@ Notice:
 
 ```go
 func minArray2(numbers []int) int {
-   left := 0
-   right := len(numbers)-1
-   for left<=right{
-      mid := (left + right) / 2
-      if numbers[mid] > numbers[right]{
-         left =mid +1
-      }else {
-         right = right -1
-      }
-   }
-   return numbers[left]
+	left := 0
+	right := len(numbers) - 1
+	for left <= right {
+		mid := (left + right) / 2
+		if numbers[mid] > numbers[right] {
+			left = mid + 1
+		} else if numbers[mid] < numbers[right] {
+			right = mid
+		} else if numbers[mid] == numbers[right] {
+			right = right - 1
+
+		}
+	}
+	return numbers[left]
 }
 ```
 
