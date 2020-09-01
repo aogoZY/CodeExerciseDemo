@@ -204,3 +204,108 @@ func minArray2(numbers []int) int {
 }
 ```
 
+#### [剑指 Offer 15. 二进制中1的个数](https://leetcode-cn.com/problems/er-jin-zhi-zhong-1de-ge-shu-lcof/)
+
+请实现一个函数，输入一个整数，输出该数二进制表示中 1 的个数。例如，把 9 表示成二进制是 1001，有 2 位是 1。因此，如果输入 9，则该函数输出 2。
+
+每次将num位移,比较其和1的关系
+
+> 示例 1：
+>
+> 输入：00000000000000000000000000001011
+> 输出：3
+> 解释：输入的二进制串 00000000000000000000000000001011 中，共有三位为 '1'。
+> 示例 2：
+>
+> 输入：00000000000000000000000010000000
+> 输出：1
+> 解释：输入的二进制串 00000000000000000000000010000000 中，共有一位为 '1'。
+> 示例 3：
+>
+> 输入：11111111111111111111111111111101
+> 输出：31
+> 解释：输入的二进制串 11111111111111111111111111111101 中，共有 31 位为 '1'。
+
+```
+func hammingWeight(num uint32) int {
+	var res int
+	for num >0{
+		if num & 1 == 1{
+			res++
+		}
+		num = num >>1
+	}
+	return res
+}
+```
+
+#### [剑指 Offer 16. 数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/)
+
+实现函数double Power(double base, int exponent)，求base的exponent次方。不得使用库函数，同时不需要考虑大数问题。
+
+> 示例 1:
+>
+> 输入: 2.00000, 10
+> 输出: 1024.00000
+> 示例 2:
+>
+> 输入: 2.10000, 3
+> 输出: 9.26100
+> 示例 3:
+>
+> 输入: 2.00000, -2
+> 输出: 0.25000
+> 解释: 2-2 = 1/22 = 1/4 = 0.25
+
+#### [剑指 Offer 17. 打印从1到最大的n位数](https://leetcode-cn.com/problems/da-yin-cong-1dao-zui-da-de-nwei-shu-lcof/)
+
+难度简单47收藏分享切换为英文关注反馈
+
+输入数字 `n`，按顺序打印出从 1 到最大的 n 位十进制数。比如输入 3，则打印出 1、2、3 一直到最大的 3 位数 999。
+
+> 输入: n = 1
+> 输出: [1,2,3,4,5,6,7,8,9]
+
+```go
+func printNumbers(n int) []int {
+   var big string
+   var res []int
+   for i := 0; i < n; i++ {
+      big = big + "9"
+   }
+   fmt.Println(big)
+   intNumI,_ :=strconv.Atoi(big)
+   for i:=1;i<=intNumI;i++{
+      res= append(res, i)
+   }
+   return res
+}
+```
+
+#### [1507. 转变日期格式](https://leetcode-cn.com/problems/reformat-date/)
+
+给你一个字符串 `date` ，它的格式为 `Day Month Year` ，其中：
+
+- `Day` 是集合 `{"1st", "2nd", "3rd", "4th", ..., "30th", "31st"}` 中的一个元素。
+- `Month` 是集合 `{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}` 中的一个元素。
+- `Year` 的范围在 `[1900, 2100]` 之间。
+
+请你将字符串转变为 `YYYY-MM-DD` 的格式，其中：
+
+- `YYYY` 表示 4 位的年份。
+
+- `MM` 表示 2 位的月份。
+
+- `DD` 表示 2 位的天数。
+
+  > 输入：date = "20th Oct 2052"
+  > 输出："2052-10-20"
+  > 示例 2：
+  >
+  > 输入：date = "6th Jun 1933"
+  > 输出："1933-06-06"
+  > 示例 3：
+  >
+  > 输入：date = "26th May 1960"
+  > 输出："1960-05-26"
+
