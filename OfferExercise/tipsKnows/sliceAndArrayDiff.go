@@ -10,7 +10,7 @@ func main()  {
 	sliceCopy := slice
 	sliceCopy[0]=9
 	fmt.Println(slice)
-	//9 2 3]
+	//9 2 3]    切片是指针 将原有值也改变了
 	fmt.Println(sliceCopy)
 	//[9 2 3]
 
