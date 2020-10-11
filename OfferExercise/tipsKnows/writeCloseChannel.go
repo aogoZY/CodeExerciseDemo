@@ -4,14 +4,16 @@ import (
 	"fmt"
 )
 
-//channel关闭之后 写出错 读取决于关闭之前是否有值 有值的话可读取出值 flag为true 否则返回默认值 flag为false
-
-//func main()  {
-//	//channel关闭之后，再写不了东西
-//	ch:=make(chan string,3)
-//	close(ch)
-//	ch<-"hello"
+channel关闭之后 写出错 读取决于关闭之前是否有值 有值的话可读取出值 flag为true 否则返回默认值 flag为false
+------------------------------------------------------------------------------
+func main()  {
+	//channel关闭之后，再写不了东西
+	ch:=make(chan string,3)
+	close(ch)
+	ch<-"hello"
 //panic: send on closed channel
+
+------------------------------------------------------------------------------
 
 //channel关闭之后，是否可以读取决于在关闭之前是否还有值，不存在的值为0，flag为false
 func main() {
