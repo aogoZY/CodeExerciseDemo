@@ -11,10 +11,9 @@ func main() {
 	//res := bubbleSortV2(input)
 	//res := selectSort(input)
 	//res := insertSort(input)
-	q:=partion(input,0,len(input)-1)
-	fmt.Println(q)
-	quitSort(input,0,len(input)-1)
-	//fmt.Println(res)
+	//quitSort(input,0,len(input)-1)
+	res := quik(input,0,len(input)-1)
+	fmt.Println(res)
 }
 
 //冒泡排序
@@ -82,9 +81,9 @@ func insertSort(input []int) []int {
 	return input
 }
 
-//快排
-func quitSort(input []int, left, right int)[]int {
-	if left<right{
+//快排 分成多个子串来做处理 对每个子串 随机选取一个标准值 将小于标准值的数置于左边 将大的标准值置于右边
+func quitSort(input []int, left, right int) []int {
+	if left < right {
 		pos := partion(input, left, right)
 		fmt.Println(pos)
 		quitSort(input, left, pos-1)
@@ -93,16 +92,73 @@ func quitSort(input []int, left, right int)[]int {
 	return input
 }
 
+//返回标志值索引位置
 func partion(arr []int, left, right int) int {
 	value := arr[right]
 	i := left - 1
 	for j := left; j < right; j++ {
 		if arr[j] <= value {
-			arr[i+1],arr[j] = arr[j],arr[i+1]
+			arr[i+1], arr[j] = arr[j], arr[i+1]
 			i++
 		}
 	}
-	arr[i+1],arr[right]=arr[right],arr[i+1]
+	arr[i+1], arr[right] = arr[right], arr[i+1]
 	fmt.Println(arr)
-	return i+1
+	return i + 1
+}
+
+//归并 先对半分 将其子串排序
+func mergeSort(arr []int) []int {
+	if len(arr) < 2 {
+		return arr
+	}
+	mid := len(arr) / 2
+	left := mergeSort(arr[:mid])
+	right := mergeSort(arr[mid:])
+	return merge(left, right)
+}
+
+func merge(left []int, right [] int) []int {
+	leftLength := len(left)
+	rightLength := len(right)
+	var res []int
+	var li, ri int
+	for li < leftLength && ri < rightLength {
+		if left[li] < right[ri] {
+			res = append(res, left[li])
+			li++
+		} else {
+			res = append(res, right[ri])
+			ri++
+		}
+	}
+
+	if li < leftLength {
+		res = append(res, left[li:]...)
+	} else {
+		res = append(res, right[ri:]...)
+	}
+	return res
+}
+
+func quik(input []int, left, right int) []int {
+	if left < right {
+		index := partion2(input,left,right)
+		quik(input, 0, index-1)
+		quik(input, index+1, right)
+	}
+	return input
+}
+
+func partion2(input []int, left, right int)int {
+	value := input[right]
+	index := left - 1
+	for i := left; i < right; i++ {
+		if input[i] < value {
+			input[index+1], input[i] = input[i], input[index+1]
+			index++
+		}
+	}
+	input[index+1],input[right]=input[right],input[index+1]
+	return index+1
 }
