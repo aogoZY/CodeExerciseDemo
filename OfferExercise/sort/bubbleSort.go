@@ -10,9 +10,8 @@ func main() {
 	//res := quitSort(input)
 	//res := bubbleSortV2(input)
 	//res := selectSort(input)
-	//res := insertSort(input)
-	//quitSort(input,0,len(input)-1)
-	res := quik(input,0,len(input)-1)
+	res := insertSort(input)
+	quitSort(input,0,len(input)-1)
 	fmt.Println(res)
 }
 
@@ -139,26 +138,4 @@ func merge(left []int, right [] int) []int {
 		res = append(res, right[ri:]...)
 	}
 	return res
-}
-
-func quik(input []int, left, right int) []int {
-	if left < right {
-		index := partion2(input,left,right)
-		quik(input, 0, index-1)
-		quik(input, index+1, right)
-	}
-	return input
-}
-
-func partion2(input []int, left, right int)int {
-	value := input[right]
-	index := left - 1
-	for i := left; i < right; i++ {
-		if input[i] < value {
-			input[index+1], input[i] = input[i], input[index+1]
-			index++
-		}
-	}
-	input[index+1],input[right]=input[right],input[index+1]
-	return index+1
 }
