@@ -10,8 +10,9 @@ func main() {
 	//res := quitSort(input)
 	//res := bubbleSortV2(input)
 	//res := selectSort(input)
-	res := insertSort(input)
-	quitSort(input,0,len(input)-1)
+	//res := insertSort(input)
+	//quitSort(input,0,len(input)-1)
+	res := quick2(input,0,len(input)-1)
 	fmt.Println(res)
 }
 
@@ -138,4 +139,39 @@ func merge(left []int, right [] int) []int {
 		res = append(res, right[ri:]...)
 	}
 	return res
+}
+
+//冒泡
+func bubble2(input []int) []int {
+	for i := 0; i < len(input); i++ {
+		for j := 0; j < len(input)-i-1; j++ {
+			if input[j] > input[j+1] {
+				input[j], input[j+1] = input[j+1], input[j]
+			}
+		}
+	}
+	return input
+}
+
+//快拍
+func quick2(input []int, left, right int)[]int {
+	if left < right {
+		index := part(input, left, right)
+		quick2(input, left, index-1)
+		quick2(input, index+1, right)
+	}
+	return input
+}
+
+func part(input []int, left, right int) int {
+	value := input[right]
+	var index =left - 1
+	for i := left; i < right; i++ {
+		if input[i] < value {
+			input[index+1], input[i] = input[i], input[index+1]
+			index++
+		}
+	}
+	input[index+1], input[right] = input[right], input[index+1]
+	return index+1
 }
