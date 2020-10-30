@@ -317,22 +317,104 @@ func main() {
 
 
 
+### go mod vs go vendor
+
+go的包引用的前世今生
+
+(1)gopath
+
+GOPATH 解决了第三方源码依赖的问题，用户比较容易的能够引用一个 Github 上的第三方代码库，进行打包构建。但这引入了一个问题，所有的团队依赖的只互联网上的一份源代码，如果这个代码库被人篡改，删除，你们的构建也会受到影响。
+
+![image-20201031010812759](/Users/zhouyang/Library/Application Support/typora-user-images/image-20201031010812759.png)
+
+(2)为了解决这个问题，社区里提出了 Go Vendoring 的方法。
+
+![image-20201031010849483](/Users/zhouyang/Library/Application Support/typora-user-images/image-20201031010849483.png)
+
+但这又引入了新的问题，随着项目的依赖增多，你的代码库可能会越来越大，例如上图，你依赖了 mypkg@v1.2.3， 这个库里有几百兆的图片，当你依赖了这个库，在 pull 代码的时候就大大增加的你的代码库大小。
 
 
-1. docker k8s?
 
-2. 算法:树、链表、冒泡排序
+(3)(Athens – Go 依赖管理工具
 
-   
+![image-20201031011059972](/Users/zhouyang/Library/Application Support/typora-user-images/image-20201031011059972.png)
 
-   
+所以你只需要标注你所有的依赖包的地址，go get 会安装先近后远的顺序帮你下载依赖，并且缓存在本地 mods 目录。
 
-   
+设置好之后，执行 Go build，就能够让 Athens 从 GoCenter 进行依赖包的下载了。当然 Athens 也能够从 Artifactory 进行 Go 依赖包的下载。
 
-   ### 
+
+
+```bash
+go mod init   生成go.sum和go.mod
+go get -v
+go build
+1、若是需要翻墙的源码
+replace (
+	golang.org/x/net v0.0.0-20181106171534-e4dc69e5b2fd => github.com/golang/net latest
+	//这表示系统依赖的 golang.org/x/net v0.0.0 这个版本应该从github.com/golang/net 这个地方下载latest也就是最新版本.
+)
+2、我依赖的不能是最新的代码怎么办
+github.com/asdine/storm v2.1.2+incompatible 修改为v2.1.1
+
+3、我依赖的某个项目是我修改过的,和官方版本不一样怎么办
+直接clone一个官方的版本到自己的github上,然后修改. 待修改完毕以后,新建一个版本即可.
+replace (
+github.com/ethereum/go-ethereum v1.8.17 => github.com/nkbai/go-ethereum v1.9.1
+)
+```
+
+go get命令拉包,eg:go get github.com/kardianos/govendor ，会将依赖包下载到`GOPATH`的路径下。
+
+包管理工具:govendor 在go build时的应用路径搜索调整成为 `当前项目目录/vendor` 目录方式
+
+cd /home/gopath/src/aogoWeb
+
+#### go vendor
+
+1. 初始化vendor目录      govendor  init(生成一个vendor目录)
+2.  govendor add +external  将GOPATH中本工程使用到的依赖包自动移动到vendor目录中,若本地GOPATH没有依赖包，先go get相应的依赖包
+
+#### go mod
+
+(版本go1.13)
+
+1. 设置环境
+
+go env -w go111module=on
+
+go env -w goproxy=yun.paic.com.cn
+
+go env sumdb=off 不校验包的hash值
+
+2. go mod init
+
+   生成go.sum & go.mod
+
+**go.sum** 是类似于比如 dep 的 Gopkg.lock 的一类文件，它详细罗列了当前项目直接或间接依赖的所有模块版本，并写明了那些模块版本的 SHA-256 哈希值以备 Go 在今后的操作中保证项目所依赖的那些模块版本不会被篡改。
+
+**go.mod** 是启用了 Go moduels 的项目所必须的最重要的文件，它描述了当前项目（也就是当前模块）的元信息，每一行都以一个动词开头，目前有以下 5 个动词:(包引用路径+版本号)
+
+- module：用于定义当前项目的模块路径。
+- go：用于设置预期的 Go 版本。
+- require：用于设置一个特定的模块版本。
+- exclude：用于从使用中排除一个特定的模块版本。
+- replace：用于将一个模块版本替换为另外一个模块版本。
+
+
+
+
+
+
+
+
 
 
 
 1. 多态
 2. 定时任务crontab linux 定时任务写法
-3. go mod和go vendor
+
+
+
+1. docker k8s?
+2. 算法:树、链表、冒泡排序

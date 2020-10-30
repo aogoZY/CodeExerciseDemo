@@ -54,13 +54,18 @@ func main() {
 	//msg2, ok := <-ch3
 	//fmt.Println(msg2, ok) //向一个有缓存通道取值 报错
 
-	ch4 := make(chan string, 2)
-	ch4 <- "hello"
-	msg3, ok := <-ch4
-	fmt.Println(msg3, ok) //向一个有缓存有值的channel取值 ok
-	msg4, ok := <-ch4
-	fmt.Println(msg4, ok) //向一个有缓存有值的channel取值 ok
+	//ch4 := make(chan string, 2)
+	//ch4 <- "hello"
+	//msg3, ok := <-ch4
+	//fmt.Println(msg3, ok) //向一个有缓存有值的channel取值 ok
+	//msg4, ok := <-ch4
+	//fmt.Println(msg4, ok) //向一个有缓存有值的channel取值 ok
 
+	ch := make(chan int, 1)
+	i,ok:=<-ch
+	fmt.Println(i)
+	fmt.Println(ok)
+	//ch <- 2
 
 }
 
