@@ -10,7 +10,7 @@ import (
 //思路二：将股票价当成一个折线图,只遍历一次，其实找到最低点和最高的差值就可以了。遍历过程中寻找最小的值，并求任意值和最小值之间的差的最大值。
 func main() {
 	input := []int{1,2,4,2,5,7,2,4,9,0}
-	res := maxProfit4(input)
+	res := maxProfit2(input)
 	fmt.Println(res)
 }
 
@@ -44,7 +44,7 @@ func maxProfit2(prices []int) (res int) {
 
 //买卖股票 允许操作多次
 //思路：仍然看成一个折线图 将其连续上升的多个子区间的最大差值找出来即可
-//代码逻辑是：只要判断下一天的价格比今天的高 我就今天买明天卖
+//判断逻辑是：只要判断下一天的价格比今天的高 我就今天买明天卖
 func maxProfit3(prices []int) (res int) {
 	if len(prices) == 0 {
 		return 0

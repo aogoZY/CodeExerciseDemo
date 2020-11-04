@@ -13,6 +13,7 @@ func main() {
 	fmt.Println(res)
 }
 
+//a 小
 func printFirstLongSubstr(strA, strB string) (res string) {
 	if len(strA) > len(strB) {
 		strA, strB = strB, strA

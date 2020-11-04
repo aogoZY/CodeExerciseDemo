@@ -756,3 +756,81 @@ func maxProfit2(prices []int) (res int) {
 }
 ```
 
+# Tree
+
+#### [ 二叉树的最小深度](https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/)给定一个二叉树，找出其最小深度。
+
+最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+
+**说明：**叶子节点是指没有子节点的节点。
+
+![img](https://assets.leetcode.com/uploads/2020/10/12/ex_depth.jpg)
+
+输入：root = [3,9,20,null,null,15,7]
+输出：2
+示例 2：
+
+输入：root = [2,null,3,null,4,null,5,null,6]
+输出：5
+
+notice:递归求其左子树、右子树的最小深度+1
+
+```
+package main
+
+import "fmt"
+
+type TreeNode struct {
+   Val   int
+   Left  *TreeNode
+   Right *TreeNode
+}
+//给定一个二叉树，找出其最小深度。
+//最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+//notice:可理解为：若求f（n）则求f（n-1），当前节点的左、右子树的最小值+1
+func minDepth(root *TreeNode) int {
+   if root == nil {
+      return 0
+   }
+   dl := minDepth(root.Left)
+   dr := minDepth(root.Right)
+   if root.Left == nil {
+      return dr + 1
+   } else if root.Right == nil {
+      return dl + 1
+   }else {
+      return min(dl,dr)+1
+   }
+}
+
+func min(x, y int) int {
+   if x > y {
+      return y
+   }
+   return x
+}
+```
+
+#### [112. 路径总和](https://leetcode-cn.com/problems/path-sum/)
+
+给定一个二叉树和一个目标和，判断该树中是否存在根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和。
+
+说明: 叶子节点是指没有子节点的节点。
+
+![image-20201104234239293](/Users/zhouyang/Library/Application Support/typora-user-images/image-20201104234239293.png)
+
+Notice:反向倒推:若是左子树和为sum-当前value 或者右子树和为sum-当前value都可.
+
+询问是否存在从当前节点 root 到叶子节点的路径，满足其路径和为 sum。假定从根节点到当前节点的值之和为 val，我们可以将这个大问题转化为一个小问题：是否存在从当前节点的子节点到叶子的路径，满足其路径和为 sum - val。满足递归的性质，若当前节点就是叶子节点，那么我们直接判断 sum 是否等于 val 即可（因为路径和已经确定，就是当前节点的值，我们只需要判断该路径和是否满足条件）。若当前节点不是叶子节点，我们只需要递归地询问它的子节点是否能满足条件即可
+
+```go
+func hasPathSum(root *TreeNode, sum int) bool {
+   if root == nil {
+      return false
+   }
+   if root.Left == nil && root.Right == nil {
+      return sum == root.Val
+   }
+   return hasPathSum(root.Left, sum-root.Val) || hasPathSum(root.Right, sum-root.Val)
+}
+```
