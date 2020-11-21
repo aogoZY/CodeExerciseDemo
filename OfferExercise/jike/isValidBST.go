@@ -38,7 +38,7 @@ func inorder(root *TreeNode, res *[]int) {
 	inorder(root.Right, res)
 }
 
-func makeTreeNode() *TreeNode {
+func MakeTreeNode() *TreeNode {
 	TreeNodeRoot := TreeNode{Val: 5}
 
 	TreeNodeLeft := TreeNode{Val: 1}
@@ -54,7 +54,7 @@ func makeTreeNode() *TreeNode {
 	return &TreeNodeRoot
 }
 func main() {
-	node := makeTreeNode()
+	node := MakeTreeNode()
 	isValidBST(node)
 
 }
