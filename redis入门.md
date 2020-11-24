@@ -361,7 +361,7 @@ Reading messages... (press Ctrl-C to quit)
 3) "world"
 ```
 
-![image-20201122161419012](/Users/zhouyang/Library/Application Support/typora-user-images/image-20201122161419012.png)
+![image-20201122161419012](/Users/zhouyang/Pictures/image-20201122161419012.png)
 
 
 
@@ -439,9 +439,26 @@ QUEUED
 | 4    | [UNWATCH](https://www.runoob.com/redis/transactions-unwatch.html) 取消 WATCH 命令对所有 key 的监视。 |
 | 5    | [WATCH key [key ...\]](https://www.runoob.com/redis/transactions-watch.html) 监视一个(或多个) key ，如果在事务执行之前这个(或这些) key 被其他命令所改动，那么事务将被打断。 |
 
+#### 9、Redis 安全
 
+```
+127.0.0.1:6379> config get requirepass
+1) "requirepass"
+2) ""
+127.0.0.1:6379> config set requirepass aogo
+OK
+127.0.0.1:6379> config get requirepass
+1) "requirepass"
+2) "aogo"
+127.0.0.1:6379> auth aogo
+OK
+```
 
+**AUTH** 命令基本语法格式如下：
 
+```
+127.0.0.1:6379> AUTH password
+```
 
 
 
