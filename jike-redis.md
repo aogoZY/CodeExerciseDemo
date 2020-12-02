@@ -29,7 +29,7 @@
 
 两大维度(系统维度+应用维度),三大主线(高性能、高可靠、高可扩展)
 
-![B89BF969-5E23-4A0E-A983-50E113CFA29D](/var/folders/rn/j1054c3j5q55dcxvlcdwjs_00000gn/T/com.yinxiang.Mac/com.yinxiang.Mac/WebKitDnD.ZQVCbB/B89BF969-5E23-4A0E-A983-50E113CFA29D.png)
+![B89BF969-5E23-4A0E-A983-50E113CFA29D](/var/folders/rn/j1054c3j5q55dcxvlcdwjs_00000gn/T/com.yinxiang.Mac/com.yinxiang.Mac/WebKitDnD.PgFuVI/B89BF969-5E23-4A0E-A983-50E113CFA29D.png)
 
 高性能主线:线程模型、数据结构、持久化、网络框架
 
@@ -45,7 +45,7 @@
 
 #### redis的问题画像图
 
-![A6CC124F-133C-461D-8CAE-46265CDCF40D](/var/folders/rn/j1054c3j5q55dcxvlcdwjs_00000gn/T/com.yinxiang.Mac/com.yinxiang.Mac/WebKitDnD.Mz48bH/A6CC124F-133C-461D-8CAE-46265CDCF40D.png)
+![A6CC124F-133C-461D-8CAE-46265CDCF40D](/var/folders/rn/j1054c3j5q55dcxvlcdwjs_00000gn/T/com.yinxiang.Mac/com.yinxiang.Mac/WebKitDnD.Cok3Tg/A6CC124F-133C-461D-8CAE-46265CDCF40D.png)
 
 eg:如果你遇到redis响应变慢的问题,参照上图可看出是与性能主线相关,而性能主线又与数据结构、异步机制、RDB、AOF重写相关.
 
@@ -53,9 +53,7 @@ eg:如果你遇到redis响应变慢的问题,参照上图可看出是与性能�
 
 附上一张课程表的目录
 
-![836603FC-4C5C-4B62-9050-D5B6086F03C7](/var/folders/rn/j1054c3j5q55dcxvlcdwjs_00000gn/T/com.yinxiang.Mac/com.yinxiang.Mac/WebKitDnD.0efkSU/836603FC-4C5C-4B62-9050-D5B6086F03C7.png)
-
-
+![836603FC-4C5C-4B62-9050-D5B6086F03C7](/var/folders/rn/j1054c3j5q55dcxvlcdwjs_00000gn/T/com.yinxiang.Mac/com.yinxiang.Mac/WebKitDnD.YKG209/836603FC-4C5C-4B62-9050-D5B6086F03C7.png)
 
 
 
@@ -95,7 +93,7 @@ PUT/GET/DELETE/SCAN
 
 键值数据库基本包含访问框架、索引模块、操作模块、存储模块四个部分.
 
-![FC762F87-7FE4-403E-A47B-745B822380F9](/var/folders/rn/j1054c3j5q55dcxvlcdwjs_00000gn/T/com.yinxiang.Mac/com.yinxiang.Mac/WebKitDnD.OK79ib/FC762F87-7FE4-403E-A47B-745B822380F9.png)
+![FC762F87-7FE4-403E-A47B-745B822380F9](/var/folders/rn/j1054c3j5q55dcxvlcdwjs_00000gn/T/com.yinxiang.Mac/com.yinxiang.Mac/WebKitDnD.KLalWD/FC762F87-7FE4-403E-A47B-745B822380F9.png)
 
 #### 采用什么模式访问?
 
@@ -161,7 +159,9 @@ simplekv依赖内存保管数据,提供快速访问,但是也希望simplekv重�
 
 simplekv vs redis
 
-![2A8998A7-8808-42C5-BC37-84F04F4FB5E2](/var/folders/rn/j1054c3j5q55dcxvlcdwjs_00000gn/T/com.yinxiang.Mac/com.yinxiang.Mac/WebKitDnD.1TowY0/2A8998A7-8808-42C5-BC37-84F04F4FB5E2.png)
+![2A8998A7-8808-42C5-BC37-84F04F4FB5E2](/var/folders/rn/j1054c3j5q55dcxvlcdwjs_00000gn/T/com.yinxiang.Mac/com.yinxiang.Mac/WebKitDnD.61RlBL/2A8998A7-8808-42C5-BC37-84F04F4FB5E2.png)
+
+
 
 (1)redis通过网络框架访问
 
@@ -185,6 +185,8 @@ simplekv和redis的对比:
 
 [内存安全性]缺乏内存过载时的key淘汰算法
 
+
+
 [内存利用率]未对数据结构优化提供内存利用率 如压缩性的数据结构
 
 [不具备事务性]无法保证多个操作的原子性
@@ -192,3 +194,151 @@ simplekv和redis的对比:
 [内存分配器]simplekv是glibc,redis更多
 
 redis比memcache流行,表面上是数据结构更丰富,本质上是“计算向数据迁移”,要高性能、高可用、就需要快.memcache只支持string类型,需要获取数据必须得全量返回,返回体大,redis支持指定的数据,返回体小,标志着通过网卡的流量少,更符合redis的epoll的网络模型,尽量不阻塞.
+
+
+
+### redis02--快速的redis有哪些慢操作
+
+#### Redis为啥快?快在哪里?
+
+(1)内存数据库,访问快
+
+(2)归功于数据结构
+
+**高效的数据结构是redis快速处理数据的基础**
+
+
+
+区分两个概念:
+
+数据类型:
+
+我们常说的 string、list、set、hash、sorted hash是redis键值对中值的数据类型,即数据保存格式.
+
+数据结构:
+
+简单动态字符串、双向链表、压缩列表、哈希表、跳表、整数数组
+
+数据类型和数据结构对应关系图
+
+![IMG_6543](/Users/zhouyang/Downloads/IMG_6543.JPG)
+
+除了string 类型只用到一种数据结构,其他四种数据类型都有两种底层实现结构,我们称这四种为集合类型,特点是一个键对应了一个集合的数据.
+
+
+
+#### 键和值用什么结构组织
+
+redis使用**hash表**来保存所有键值对.
+
+一个hash表就是一个数组,数组的每个元素成为一个hash桶,每个hash桶保存了键值对数据.
+
+hash桶中的元素保存的是指向具体值的指针.
+
+下图:
+
+hash桶中的entry元素保存了*key和*value的值,分别指向实际的键值.
+
+hash表的好处:o(1)的时间复杂度,快速找到键值对----计算键的hash值,找到hash桶的位置,访问对应的entry元素.
+
+
+
+hash表的O(1)复杂度和快速查找的特性,为啥redis大量写入数据时操作变慢了?——hash表的 冲突和rehash带来的阻塞.
+
+
+
+#### 为什么hash表操作变慢了?
+
+hash冲突:两个key的hash值和hash桶计算对应关系时,正好落在了一个hash桶.
+
+解决hash冲突的方式:链式hash.即同一个hash桶中的多个元素用一个链表保存,它们之间用指针连接.
+
+![img](https://static001.geekbang.org/resource/image/8a/28/8ac4cc6cf94968a502161f85d072e428.jpg)
+
+问题在于:hash链上的元素只能通过指针逐一查找,数据越来越多会导致在链上查找元素时耗长,效率低.
+
+解决方式:rehash.即增加现有的hash桶数量,让逐渐增多的entry元素能在更多的桶之间分散保存
+
+
+
+为了rehash更高效,默认使用两个全局hash表.一开始插入数据默认使用哈希表1,此时的哈希表2并没有被分配空间.随着数据逐步增多,redis开始rehash.分为三步:
+
+1、给哈希表2分配更大的空间,例如是哈希表1两倍的大小;
+
+2、把哈希表1中的数据重新映射并拷贝到哈希表2中,
+
+3、释放哈希表1的空间
+
+至此从哈希表1切换到哈希表2,用增大的哈希表2来保存更多数据,原来的哈希表1留作下一次rehash扩容备.
+
+第二步中涉及到大量的数据拷贝,为了避免造成的线程阻塞,redis采用了渐进式rehash.
+
+![img](https://static001.geekbang.org/resource/image/73/0c/73fb212d0b0928d96a0d7d6ayy76da0c.jpg)
+
+巧妙地把一次性大量拷贝的开销分摊到了多次处理请求的过程中,避免耗时操作,保证了数据的快速访问
+
+
+
+跳表快速查找过程:建立多起级索引跳来跳去最后定位到元素.跳表复杂度o(logn)
+
+![img](https://static001.geekbang.org/resource/image/1e/b4/1eca7135d38de2yy16681c2bbc4f3fb4.jpg)
+
+
+
+### redis03-高性能io模型：为什么单线程redis可以那么快
+
+首先，我要和你厘清一个事实，我们通常说，Redis 是单线程，主要是指 Redis 的网络 IO 和键值对读写是由一个线程来完成的，这也是 Redis 对外提供键值存储服务的主要流程。但 Redis 的其他功能，比如持久化、异步删除、集群数据同步等，其实是由额外的线程执行的。
+
+为什么用单线程？为什么单线程能这么快？
+
+要弄明白这个问题，我们就要深入地学习Redis 的单线程设计机制以及多路复用机制。
+
+#### Redis 为什么用单线程？
+
+#### 多线程的开销
+
+日常写程序时，我们经常会听到一种说法：“使用多线程，可以增加系统吞吐率，或是可以增加系统扩展性。”的确，对于一个多线程的系统来说，在有合理的资源分配的情况下，可以增加系统中处理请求操作的资源实体，进而提升系统能够同时处理的请求数，即吞吐率。
+
+系统中通常会存在被多线程同时访问的共享资源，比如一个共享的数据结构。当有多个线程要修改这个共享资源时，为了保证共享资源的正确性，就需要有额外的机制进行保证，而这个额外的机制，就会带来额外的开销。
+
+假设 Redis 采用多线程设计，如下图所示，现在有两个线程 A 和 B，线程 A 对一个 List 做 LPUSH 操作，并对队列长度加 1。同时，线程 B 对该 List 执行 LPOP 操作，并对队列长度减 1。为了保证队列长度的正确性，Redis 需要让线程 A 和 B 的 LPUSH 和 LPOP 串行执行，这样一来，Redis 可以无误地记录它们对 List 长度的修改。否则，我们可能就会得到错误的长度结果。这就是多线程编程模式面临的共享资源的并发访问控制问题。
+
+![img](https://static001.geekbang.org/resource/image/30/08/303255dcce6d0837bf7e2440df0f8e08.jpg)
+
+而且，采用多线程开发一般会引入同步原语来保护共享资源的并发访问，这也会降低系统代码的易调试性和可维护性。
+
+#### 单线程 Redis 为什么那么快？
+
+一方面，Redis 的大部分操作在内存上完成，再加上它采用了高效的数据结构，例如哈希表和跳表，这是它实现高性能的一个重要原因。另一方面，就是 Redis 采用了多路复用机制，使其在网络 IO 操作中能并发处理大量的客户端请求，实现高吞吐率。
+
+#### 基本 IO 模型与阻塞点
+
+以 Get 请求为例，SimpleKV 为了处理一个 Get 请求，需要监听客户端请求（bind/listen），和客户端建立连接（accept），从 socket 中读取请求（recv），解析客户端发送请求（parse），根据请求类型读取键值数据（get），最后给客户端返回结果，即向 socket 中写回数据（send）。
+
+![img](https://static001.geekbang.org/resource/image/e1/c9/e18499ab244e4428a0e60b4da6575bc9.jpg)
+
+#### 非阻塞模式
+
+在 socket 模型中，不同操作调用后会返回不同的套接字类型。socket() 方法会返回主动套接字，然后调用 listen() 方法，将主动套接字转化为监听套接字，此时，可以监听来自客户端的连接请求。最后，调用 accept() 方法接收到达的客户端连接，并返回已连接套接字。
+
+针对监听套接字，我们可以设置非阻塞模式：当 Redis 调用 accept() 但一直未有连接请求到达时，Redis 线程可以返回处理其他操作，而不用一直等待。
+
+![img](https://static001.geekbang.org/resource/image/1c/4a/1ccc62ab3eb2a63c4965027b4248f34a.jpg)
+
+#### 基于多路复用的高性能 I/O 模型
+
+Linux 中的 IO 多路复用机制是指一个线程处理多个 IO 流，就是我们经常听到的 select/epoll 机制。简单来说，在 Redis 只运行单线程的情况下，该机制允许内核中，同时存在多个监听套接字和已连接套接字。内核会一直监听这些套接字上的连接请求或数据请求。一旦有请求到达，就会交给 Redis 线程处理，这就实现了一个 Redis 线程处理多个 IO 流的效果。
+
+下图就是基于多路复用的 Redis IO 模型。图中的多个 FD 就是刚才所说的多个套接字。Redis 网络框架调用 epoll 机制，让内核监听这些套接字。此时，Redis 线程不会阻塞在某一个特定的监听或已连接套接字上，也就是说，不会阻塞在某一个特定的客户端请求处理上。正因为此，Redis 可以同时和多个客户端连接并处理请求，从而提升并发性。
+
+![img](https://static001.geekbang.org/resource/image/00/ea/00ff790d4f6225aaeeebba34a71d8bea.jpg)
+
+为了在请求到达时能通知到 Redis 线程，select/epoll 提供了基于事件的回调机制，即针对不同事件的发生，调用相应的处理函数。
+
+这就像病人去医院瞧病。在医生实际诊断前，每个病人（等同于请求）都需要先分诊、测体温、登记等。如果这些工作都由医生来完成，医生的工作效率就会很低。所以，医院都设置了分诊台，分诊台会一直处理这些诊断前的工作（类似于 Linux 内核监听请求），然后再转交给医生做实际诊断。这样即使一个医生（相当于 Redis 单线程），效率也能提升。
+
+小结
+
+今天，我们重点学习了 Redis 线程的三个问题：“Redis 真的只有单线程吗？”“为什么用单线程？”“单线程为什么这么快？”
+
+现在，我们知道了，Redis 单线程是指它对网络 IO 和数据读写的操作采用了一个线程，而采用单线程的一个核心原因是避免多线程开发的并发控制问题。单线程的 Redis 也能获得高性能，跟多路复用的 IO 模型密切相关，因为这避免了 accept() 和 send()/recv() 潜在的网络 IO 操作阻塞点。
