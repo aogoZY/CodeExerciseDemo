@@ -196,9 +196,9 @@ CONFIG SET maxmemory 4gb
 3. volatile-ttl----设置了过期时间的键值对，根据过期时间的先后进行删除，越早过期的越先被删除
 4. volatile-lru---LRU 算法筛选设置了过期时间的键值
 5. volatile-lfu---- LFU 算法选择设置了过期时间的键值对
-6. allkeys-lru----使用 LRU 算法在所有数据中进行筛选。
-7. allkeys-random---从所有键值对中随机选择并删除数据；
-8. allkeys-lfu----使用 LFU 算法在所有数据中进行筛选。
+6. allkeys-lru----使用 LRU 算法在所有数据中进行筛选
+7. allkeys-random---从所有键值对中随机选择并删除数据
+8. allkeys-lfu----使用 LFU 算法在所有数据中进行筛选
 
 
 
