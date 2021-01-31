@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	_ "fmt"
+	"time"
 )
 
 func main() {
@@ -12,7 +13,10 @@ func main() {
 	//res := selectSort(input)
 	//res := insertSort(input)
 	//quitSort(input,0,len(input)-1)
-	res := quick2(input,0,len(input)-1)
+	now:=time.Now()
+	res := bubble3(input)
+	end:=time.Since(now)
+	fmt.Println(end)
 	fmt.Println(res)
 }
 
@@ -154,7 +158,7 @@ func bubble2(input []int) []int {
 }
 
 //快拍
-func quick2(input []int, left, right int)[]int {
+func quick2(input []int, left, right int) []int {
 	if left < right {
 		index := part(input, left, right)
 		quick2(input, left, index-1)
@@ -165,7 +169,7 @@ func quick2(input []int, left, right int)[]int {
 
 func part(input []int, left, right int) int {
 	value := input[right]
-	var index =left - 1
+	var index = left - 1
 	for i := left; i < right; i++ {
 		if input[i] < value {
 			input[index+1], input[i] = input[i], input[index+1]
@@ -173,5 +177,43 @@ func part(input []int, left, right int) int {
 		}
 	}
 	input[index+1], input[right] = input[right], input[index+1]
-	return index+1
+	return index + 1
+}
+
+func quic3(input []int, left, right int) []int {
+	if left < right {
+		pos := partion3(input, left, right)
+		quic3(input, left, pos-1)
+		quic3(input, pos+1, right)
+	}
+	return input
+}
+
+func partion3(input []int, left, right int) int {
+	value := input[right]
+	i := left - 1
+	for j := left; j < right; j++ {
+		if input[j] < value {
+			input[i+1], input[j] = input[j], input[i+1]
+			i++
+		}
+	}
+	input[i+1], input[right] = input[right], input[i+1]
+	return i + 1
+}
+
+func bubble3(input []int) []int {
+	//flag := false
+	for i := len(input); i > 0; i-- {
+		for j := 0; j < i-1; j++ {
+			if input[j] > input[j+1] {
+				input[j], input[j+1] = input[j+1], input[j]
+				//flag = true
+			}
+		}
+		//if flag == false {
+		//	break
+		//}
+	}
+	return input
 }

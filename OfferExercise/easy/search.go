@@ -23,30 +23,32 @@ func search(nums []int, target int) int {
 }
 
 func main() {
-	input := []int{7,1,5,3,6,4}
-	res := maxProfit(input)
+	//input := []int{7,1,5,3,6,4}
+	//res := maxProfit(input)
+	input := []int{1, 2, 4, 5, 7}
+	res := search(input, 4)
 	fmt.Println(res)
 }
 
-func maxProfit(prices []int)int{
+func maxProfit(prices []int) int {
 	var list []int
-	for i:=0;i<len(prices);i++{
-		for j:=i+1;j<len(prices);j++{
-			if prices[j]-prices[i]>0{
-				list=append(list,prices[j]-prices[i])
+	for i := 0; i < len(prices); i++ {
+		for j := i + 1; j < len(prices); j++ {
+			if prices[j]-prices[i] > 0 {
+				list = append(list, prices[j]-prices[i])
 			}
 		}
 	}
 	fmt.Println(list)
-	sortedList :=sortList(list)
+	sortedList := sortList(list)
 	return sortedList[len(list)-1]
 }
 
-func sortList(input []int)[]int{
-	for i:=0;i<len(input);i++{
-		for j:=0;j<len(input)-i-1;j++{
-			if input[j]>input[j+1]{
-				input[j],input[j+1]=input[j+1],input[j]
+func sortList(input []int) []int {
+	for i := 0; i < len(input); i++ {
+		for j := 0; j < len(input)-i-1; j++ {
+			if input[j] > input[j+1] {
+				input[j], input[j+1] = input[j+1], input[j]
 			}
 		}
 	}
