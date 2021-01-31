@@ -2,13 +2,11 @@
 
 ### book list 100
 
-1. [代码整洁之道] （https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book01-%E4%BB%A3%E7%A0%81%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93.md）
+- [book01-代码整洁之道](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book01-%E4%BB%A3%E7%A0%81%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93.md)
 
-   
+- [book02-贫穷的本质](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book02-%E8%B4%AB%E7%A9%B7%E7%9A%84%E6%9C%AC%E8%B4%A8.md)
 
-2. 贫穷的本质
-
-3. linux系统管理初学者指南
+- [book03-linux系统管理初学者指南]()
 
 ### GOLANG
 
