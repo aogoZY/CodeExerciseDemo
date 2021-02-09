@@ -14,7 +14,7 @@
 
 ### GOLANG
 
-- 
+- [breakKnowlgdeg](https://github.com/aogoZY/CodeExerciseDemo/blob/master/golang/breakKnowledge.md)
 - 
 
 
@@ -28,7 +28,7 @@
 
 ### Linux
 
-
+- [http vs https](https://github.com/aogoZY/CodeExerciseDemo/blob/master/summary/http.md)
 
 ### redis
 
