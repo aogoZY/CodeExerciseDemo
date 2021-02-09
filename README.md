@@ -21,9 +21,10 @@
 
 ### 数据库
 
-- 
+- [数据库](https://github.com/aogoZY/CodeExerciseDemo/blob/master/summary/%E6%95%B0%E6%8D%AE%E5%BA%93.md)
 
-
+- [db sql](https://github.com/aogoZY/CodeExerciseDemo/blob/master/summary/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E8%AF%A2sql.md)
+- [db优化](https://github.com/aogoZY/CodeExerciseDemo/blob/master/summary/db%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96.md)
 
 ### Linux
 
