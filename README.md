@@ -36,7 +36,7 @@
 
 ### 算法
 
-- 排序
+- [golang六大排序算法](https://github.com/aogoZY/CodeExerciseDemo/blob/master/golang/go%20sort.md)
 - 树
 - 链表
 
