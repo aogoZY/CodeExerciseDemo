@@ -1,6 +1,4 @@
-### redis用途
-
-### 安装redis
+###  一、安装redis
 
 1、官网下载压缩包https://redis.io/download
 
@@ -8,45 +6,59 @@ or brew install redis(太慢了...)
 
 2、解压
 
+```
 tar zxvf redis-6.0.9.tar.gz
+```
 
 3、复制到usr/local目录下
 
+```
 mv redis-6.0.9 /usr/local/
+```
 
 若此时报权限不足可使用:sudo mv redis-6.0.9 /usr/local/
 
 4、切换到对应目录,编译测试
 
+```
 cd /usr/local/redis-6.0.9
+```
 
 sudo make test[我这里出现了一个errno,但是没管它]
 
 编译安装
 
+```
 sudo make install
+```
 
 5、启动
 
+```
 redis-server
+```
 
 6、查看redis服务是否启动
 
+```
 ps aux|grep redis
+```
 
 7、redis-cli连接redis服务
 
+```
 redis-cli -h 127.0.0.1 -p 6379
+```
 
 ![image-20201122110558618](/Users/zhouyang/Library/Application Support/typora-user-images/image-20201122110558618.png)
 
 8、停止redis服务
 
+```
 shutdown redis-cli
+```
 
-
-
-### redis使用
+### 二、redis使用
 
 #### 1、string类型(set/get)
 
@@ -89,7 +101,7 @@ OK
 | 19   | [DECRBY key decrement](https://www.runoob.com/redis/strings-decrby.html) key 所储存的值减去给定的减量值（decrement） 。 |
 | 20   | [APPEND key value](https://www.runoob.com/redis/strings-append.html) 如果 key 已经存在并且是一个字符串， APPEND 命令将指定的 value 追加到该 key 原来值（value）的末尾。 |
 
-#### 2、has类型(hmset/hmget)
+#### 2、hash类型(hmset/hmget)
 
 Redis hash 是一个 string 类型的 field（字段） 和 value（值） 的映射表，hash 特别适合用于存储对象。
 
