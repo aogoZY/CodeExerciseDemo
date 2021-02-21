@@ -15,9 +15,9 @@
 ### GOLANG
 
 - [breakKnowlgdeg](https://github.com/aogoZY/CodeExerciseDemo/blob/master/golang/breakKnowledge.md)
-- 
-
-
+- 还在为服务间的复杂调用烦恼吗，来试试jaeger吧[jaeger初试]()
+- 度量系统prometheus
+- 日志系统elk
 
 ### 数据库
 
