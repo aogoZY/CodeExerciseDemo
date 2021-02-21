@@ -15,7 +15,9 @@
 ### GOLANG
 
 - [breakKnowlgdeg](https://github.com/aogoZY/CodeExerciseDemo/blob/master/golang/breakKnowledge.md)
-- 还在为服务间的复杂调用烦恼吗，来试试jaeger吧[jaeger初试]()
+- 还在为服务间的复杂调用烦恼吗，来试试jaeger吧--[jaeger初试](https://github.com/aogoZY/CodeExerciseDemo/blob/master/golang/jaeger%E5%88%9D%E8%AF%86.md)
+- jaeger咋用的，jaeger基本框架解说--[jaeger基本框架](https://github.com/aogoZY/CodeExerciseDemo/blob/master/golang/jaeger%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D.md)
+- go的性能分析，咋看啊--[有我呢，pprof来也](https://github.com/aogoZY/CodeExerciseDemo/blob/master/golang/pprof%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3-%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%A4%A7%E6%9D%80%E5%99%A8.md)
 - 度量系统prometheus
 - 日志系统elk
 
