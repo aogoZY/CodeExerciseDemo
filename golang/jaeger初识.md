@@ -1,14 +1,14 @@
-## Jager是干啥的
+## Jaeger是干啥的
 
 ​		分布式链路追踪系统，底层用golang实现，兼容opentracing标准。
 
-## Jager怎么做的
+## Jaeger怎么做的
 
 ​		一套完整的Jager追踪系统包括Jaeger-client、Jaeger-agent、Jaeger-collector、Database和Jaeger-query UI等基本组件，如下图架构图所示，Jaeger客户端支持多种语言，jaeger-agent与客户端进行数据交互，并把数据push到Jaeger-collector组件，Jaeger-collector将数据持久化到数据库，Jaeger-query是一个web服务，用于展示跟踪链路。以下为Jaeger容器化部署的基本流程: 分为测试环境和正式环境两种方式。
 
 ![img](https://img2018.cnblogs.com/common/826988/202001/826988-20200115112659501-1441836958.png)
 
-## Jager咋用的
+## Jaeger咋用的
 
 ### 1、安装必要的包
 
@@ -67,7 +67,7 @@ docker ps
 
 ![image-20210220171303805](/Users/zhouyang/Library/Application Support/typora-user-images/image-20210220171303805.png)
 
-### 3、jager demo上手试试吧伙计们
+### 3、jaeger demo上手试试吧伙计们
 
 **编写demo**
 
@@ -156,8 +156,6 @@ func main() {
 运行结果：
 
 ![image-20210221171331342](/Users/zhouyang/Library/Application Support/typora-user-images/image-20210221171331342.png)
-
-
 
 ​		查看详情，可以看到这个响应的reply、request、ip、service-name、开始时间、结束时间、开销时间等信息。主要是这个demo写的比较简单，看不到太多信息。在实际工作时你会发现，你所处的是一个工作流上的一环，你所依赖的上下游也是整个环中的一部分罢了，尤其是你本身这一环中，各个微服务之间相互依赖调用的，比如前端访问你后端接口，先要去做um的权限校验，查看用户是否注册合法，若校验通过的话会携带token信息去到你的网关服务，网关服务再根据你的请求体找到你需要访问的服务，转发给实际的业务服务接口，真正的业务服务接口可能又有用户管理权限的鉴权，然后再去做数据库的crud，db记录下来之后再去调用他的下游服务。这还是一个比较简单的模型，若是在中间加入一些redis、es之类的、服务依赖再等一些的，是不是会更复杂。你的调用链越多，你接入链路追踪的必要性和收益就越大。
 

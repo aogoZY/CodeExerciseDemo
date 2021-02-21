@@ -125,7 +125,7 @@
 
 ## 参考文献
 
-[jager](https://www.cnblogs.com/sunlong88/p/14324911.html)
+[jaeger](https://www.cnblogs.com/sunlong88/p/14324911.html)
 
 [分布式链路追踪系统：Jaeger在golang中的应用](https://studygolang.com/articles/28685?fr=sidebar)
 
