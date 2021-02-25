@@ -12,6 +12,8 @@
 
 - [book05-被讨厌的勇气](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book05-%E8%A2%AB%E8%AE%A8%E5%8E%8C%E7%9A%84%E5%8B%87%E6%B0%94.md)
 
+-[book06-我的第一本逻辑入门书](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book06-%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E6%9C%AC%E9%80%BB%E8%BE%91%E6%80%9D%E8%80%83%E5%85%A5%E9%97%A8.md)
+
   
 
 ### GOLANG
