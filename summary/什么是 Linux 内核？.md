@@ -15,8 +15,8 @@ Linux 系统的核心是内核。内核控制着计算机系统上的所有硬�
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200229173922281.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RoaW5rV29u,size_16,color_FFFFFF,t_70)
 
-- 用户空间(User Space) ：用户空间又包括用户的应用程序(User Applications)、C 库(C Library) 。
-- 内核空间(Kernel Space) ：内核空间又包括系统调用接口(System Call Interface)、内核(Kernel)、平台架构相关的代码(Architecture-Dependent Kernel Code) 。
+- 用户空间(User Space) ：用户空间包括用户的应用程序(User Applications)、C 库(C Library) 。
+- 内核空间(Kernel Space) ：内核空间包括系统调用接口(System Call Interface)、内核(Kernel)、平台架构相关的代码(Architecture-Dependent Kernel Code) 。
 
 ### Linux 使用的进程间通信方式？
 

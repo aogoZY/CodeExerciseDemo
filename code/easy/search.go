@@ -19,14 +19,13 @@ func search(nums []int, target int) int {
 		}
 	}
 	return -1
-
 }
 
 func main() {
 	//input := []int{7,1,5,3,6,4}
 	//res := maxProfit(input)
 	input := []int{1, 2, 4, 5, 7}
-	res := search(input, 4)
+	res := search(input, 8)
 	fmt.Println(res)
 }
 
