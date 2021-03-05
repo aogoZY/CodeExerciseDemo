@@ -1,16 +1,28 @@
+
+
 # golang知识点碎片
 
 [TOC]
 
-# 1、go的数组、切片,如何扩容?指针引用还是值引用?
+# 1、数组 vs 切片？
 
-- 定义方式不一样
-- 初始化方式不一样:数组的长度是固定的(需指定大小)，而切片不是（切片是动态的数组）
-- 传递方式不一样: 切片是指针类型，数组是值类型.
-
-切片比数组多一个属性：容量（cap)
-
-切片的底层是数组
+- 相同点：
+  - 都是一系列用来存放对应数据的集合
+- 不同点：
+  - 初始化方式：
+    - 数组长度固定(需指定大小)，定义后**只能修改，无法增删**
+    - 切片可以进行后续操作改变(切片是动态的数组)
+  - 语法定义方式：
+    - 数组的语法为： var arr  [10]int
+    - 切片的语法为： var arr []int
+  - 传递方式：
+    - 数组：**值类型**，进行函数传递值时，通常是值传递，拷贝一份后进行操作
+    - 切片：**引用类型**，函数操作时，针对传递指针进行操作
+  - 空间大小：
+    - 数组：数组大小为初始值时，默认的长度以及类型进行开辟空间
+    - 切片：切片大小默认为24。这是因为切片的结构体只存放三个3个变量
+      - 指针，长度，容量
+      - 切片可以进行增删值，当超出现有容量后，会在1024容量内进行翻倍，超出后则每次增加1/4
 
 ```go
 package main
@@ -61,13 +73,9 @@ func main()  {
 
 #### 什么是channel，为什么它可以做到线程安全？
 
-Channel是Go中的一个核心类型，可以把它看成一个管道，通过它并发核心单元就可以发送或者接收数据进行通讯(communication),Channel也可以理解是一个先进先出的队列，通过管道进行通信。
+Channel是Go中的一个核心类型，可以把它看成一个管道，通过它并发核心单元就可以发送或者接收数据进行通讯，Channel也可以理解是一个先进先出的队列，通过管道进行通信。
 
-Golang的Channel,发送一个数据到Channel 和 从Channel接收一个数据 都是 原子性的。
-
-前者就是传统的加锁，后者就是Channel。也就是说，设计Channel的主要目的就是在多任务间传递数据的，这当然是安全的。
-
-不同于传统的多线程并发模型使用共享内存来实现线程间通信的方式，golang 的哲学是通过 channel 进行协程(goroutine)之间的通信来实现数据共享：
+不同于传统的多线程并发模型使用共享内存来实现线程间通信的方式，golang 的哲学是通过 channel 进行协程(goroutine)之间的通信来实现数据共享：前者就是传统的加锁，后者就是Channel。也就是说，设计Channel的主要目的就是在多任务间传递数据的，这当然是安全的。
 
 > Do not communicate by sharing memory; instead, share memory by communicating.  --《effective go》
 
@@ -327,13 +335,15 @@ func main() {
 
 go的包引用的前世今生
 
-(1)gopath
+### go path
 
 GOPATH 解决了第三方源码依赖的问题，用户比较容易的能够引用一个 Github 上的第三方代码库，进行打包构建。但这引入了一个问题，所有的团队依赖的只互联网上的一份源代码，如果这个代码库被人篡改，删除，你们的构建也会受到影响。
 
 ![image-20201031010812759](/Users/zhouyang/Library/Application Support/typora-user-images/image-20201031010812759.png)
 
-(2)为了解决这个问题，社区里提出了 Go Vendoring 的方法。
+### go vendor
+
+为了解决这个问题，社区里提出了 Go Vendoring 的方法。
 
 ![image-20201031010849483](/Users/zhouyang/Library/Application Support/typora-user-images/image-20201031010849483.png)
 
@@ -341,7 +351,7 @@ GOPATH 解决了第三方源码依赖的问题，用户比较容易的能够引�
 
 
 
-(3)Athens – Go 依赖管理工具
+### go mod
 
 ![image-20201031011059972](/Users/zhouyang/Library/Application Support/typora-user-images/image-20201031011059972.png)
 
@@ -372,30 +382,32 @@ go get命令拉包,eg:go get github.com/kardianos/govendor ，会将依赖包下
 
 包管理工具:govendor 在go build时的应用路径搜索调整成为 `当前项目目录/vendor` 目录方式
 
-cd /home/gopath/src/aogoWeb
 
-##### go vendor
+
+### 使用方式
+
+#### go vendor
 
 1. 初始化vendor目录      govendor  init(生成一个vendor目录)
 2.  govendor add +external  将GOPATH中本工程使用到的依赖包自动移动到vendor目录中,若本地GOPATH没有依赖包，先go get相应的依赖包
 
-##### go mod
+#### go mod
 
 (版本go1.13)
 
 1. 设置环境
 
-go env -w go111module=on
-
-go env -w goproxy=yun.paic.com.cn
-
-go env sumdb=off 不校验包的hash值
+   ```
+   go env -w go111module=on
+   go env -w goproxy=yun.paic.com.cn
+   go env sumdb=off 不校验包的hash值
+   ```
 
 2. go mod init
 
    生成go.sum & go.mod
 
-**go.sum** 是类似于比如 dep 的 Gopkg.lock 的一类文件，它详细罗列了当前项目直接或间接依赖的所有模块版本，并写明了那些模块版本的 SHA-256 哈希值以备 Go 在今后的操作中保证项目所依赖的那些模块版本不会被篡改。
+**go.sum** 详细罗列了当前项目直接或间接依赖的所有模块版本，并写明了那些模块版本的 SHA-256 哈希值以备 Go 在今后的操作中保证项目所依赖的那些模块版本不会被篡改。
 
 **go.mod** 是启用了 Go moduels 的项目所必须的最重要的文件，它描述了当前项目（也就是当前模块）的元信息，每一行都以一个动词开头，目前有以下 5 个动词:(包引用路径+版本号)
 
@@ -404,7 +416,8 @@ go env sumdb=off 不校验包的hash值
 - require：用于设置一个特定的模块版本。
 - exclude：用于从使用中排除一个特定的模块版本。
 - replace：用于将一个模块版本替换为另外一个模块版本。
-- 
+
+  
 
 # 5、make vs new
 
@@ -412,7 +425,7 @@ new：为所有的类型分配内存，并初始化为零值，返回指针。
 
 make：只能为 slice，map，chan 分配内存，并初始化，返回的是类型。
 
-**1.new和make的区别？**
+**new和make的区别？**
 
 - 相同点：
 
@@ -420,47 +433,93 @@ make：只能为 slice，map，chan 分配内存，并初始化，返回的是�
 
 - 不同点：
 
-  - new是初始化一个类型的指针,返回的是类型**指针**，而里面的值为默认初始值，只对值类型有效
+  - new是初始化一个类型的指针,返回的是**指针**，值为默认初始值，只对值类型有效
 
-    返回值是一个指向新分配类型零值的指针
+    ```
+    func new(Type) *Type
+    ```
 
-  - make是针对**slice**切片，**map**字典，**chan管道**初始化，并非返回指针，而是对应的类型有效
+  - make**仅**用于**分配**和**初始化** slice、map 以及 channel 类型的对象，三种类型都是结构。返回值为类型，而不是指针。
 
+    ```
+    func make(t Type, size ...IntegerType) Type
+    ```
+
+    - slice 源码结构：
+
+    ```Go
+    type slice struct {
+        array unsafe.Pointer  //指针
+        len   int             //长度
+        cap   int             //容量
+    }
+    ```
+
+    - map 源码结构：
+
+    ```Go
+    // A header for a Go map.
+    type hmap struct {
+    	// Note: the format of the hmap is also encoded in cmd/compile/internal/gc/reflect.go.
+    	// Make sure this stays in sync with the compiler's definition.
+    	count     int // # live cells == size of map.  Must be first (used by len() builtin)
+    	flags     uint8
+    	B         uint8  // log_2 of # of buckets (can hold up to loadFactor * 2^B items)
+    	noverflow uint16 // approximate number of overflow buckets; see incrnoverflow for details
+    	hash0     uint32 // hash seed
     
+    	buckets    unsafe.Pointer // array of 2^B Buckets. may be nil if count==0.
+    	oldbuckets unsafe.Pointer // previous bucket array of half the size, non-nil only when growing
+    	nevacuate  uintptr        // progress counter for evacuation (buckets less than this have been evacuated)
+    
+    	extra *mapextra // optional fields
+    }
+    ```
 
-# 6、数组和切片的区别
+    - channel 源码结构：
 
-- 相同点：
-  - 都是一系列用来存放对应数据的集合
-- 不同点：
-  - 基本：
-    - 数组不可改变，定义后只能修改，无法增删
-    - 切片可以进行后续操作改变
-  - 语法定义：
-    - 数组的语法为： var arr  [10]int
-    - 切片的语法为： var arr []int
-  - 类型：
-    - 数组：值类型，进行函数传递值时，通常是值传递，拷贝一份后进行操作
-    - 切片：引用类型，函数操作时，针对传递指针进行操作
-  - 空间大小：
-    - 数组：数组大小为初始值时，默认的长度以及类型进行开辟空间
-    - 切片：切片大小默认为24。这是因为切片的结构体只存放三个3个变量
-      - 指针，长度，容量
-      - 切片可以进行增删值，当超出现有容量后，会在1024容量内进行翻倍，超出后则每次增加1/4
+    ```Go
+    type hchan struct {
+    	qcount   uint           // total data in the queue
+    	dataqsiz uint           // size of the circular queue
+    	buf      unsafe.Pointer // points to an array of dataqsiz elements
+    	elemsize uint16
+    	closed   uint32
+    	elemtype *_type // element type
+    	sendx    uint   // send index
+    	recvx    uint   // receive index
+    	recvq    waitq  // list of recv waiters
+    	sendq    waitq  // list of send waiters
+    
+    	// lock protects all fields in hchan, as well as several
+    	// fields in sudogs blocked on this channel.
+    	//
+    	// Do not change another G's status while holding this lock
+    	// (in particular, do not ready a G), as this can deadlock
+    	// with stack shrinking.
+    	lock mutex
+    }
+    ```
 
+  
 
-
-
-
-
-
-1. 多态
-
-   
-
+  
 
 
-# 7、map的key可以有哪些类型?可以用struct interface吗
+
+
+
+
+
+# 6、map的key可以有哪些类型?
+
+结论:
+
+相同结构,只要成员类型可比较,则能比较
+
+不同结构,如果能相互转化也能比较.前提是成员都是可比较的.
+
+
 
 可:bool, 数字，string, 指针, channel , interface, structs, arrays 
 
@@ -485,23 +544,17 @@ value可以是**任意类型**。
 
 
 
-# 8、go的并发流程?
+# 7、go的并发流程?
 
-**Go语言通过系统的线程来多路派遣这些函数的执行，使得每个用go关键字执行的函数可以运行成为一个单位协程。当一个协程阻塞的时候，调度器就会自动把其他协程安排到另外的线程中去执行，从而实现了程序无等待并行化运行。而且调度的开销非常小，一颗CPU调度的规模不下于每秒百万次，**这使得我们能够创建大量的goroutine，从而可以很轻松地编写高并发程序，达到我们想要的目的。
+**Go语言通过系统的线程来多路派遣这些函数的执行，使得每个用go关键字执行的函数可以运行成为一个单位协程。**
 
+**当一个协程阻塞的时候，调度器就会自动把其他协程安排到另外的线程中去执行，从而实现了程序无等待并行化运行。**
 
-
-字符串起两个协程按顺序打印
-
-联查两表中某用户创建的订单前十的用户名
+**而且调度的开销非常小，一颗CPU调度的规模不下于每秒百万次，**这使得我们能够创建大量的goroutine，从而可以很轻松地编写高并发程序，达到我们想要的目的。
 
 
 
-sync.waitgroup的锁
-
-
-
-# 13、map多线程操作是否线程安全
+# 8、map多线程操作是否线程安全
 
 map：不是线程安全的。在同一时间段内，让不同 goroutine 中的代码，对同一个字典进行读写操作是不安全
 的。字典值本身可能会因这些操作而产生混乱，相关的程序也可能会因此发生不可预知的问题。
@@ -523,7 +576,9 @@ sync.Map:并发安全的字典类型sync.Map。这个字典类型提供了一些
     })
 ```
 
-map的key可以是什么?不能是什么
+
+
+# 9、map的key可以是什么?不能是什么
 
 ```
 键类型的值之间必须可以施加操作符==和!=。换句话说，键类型的值必须要支持判等操作。由于函数类型、字典类型和切片类型的值并不支持判等操作，所以字典的键类型不能是这些类型。
@@ -537,84 +592,36 @@ map查找的流程中,“把键值转换为哈希值”以及“把要查找的�
 
 
 
-# 14、
+# 10、select可以用于什么
 
-# 协程同步的方式 waitgroup和context区别 如何处理异常 defer
-
-
-
-# 网络不可达如何排查，例如我当前打不开qq.com
-
-1. go map slice 实现（[源码](https://www.nowcoder.com/jump/super-jump/word?word=源码)分析以及slice内存泄漏分析）
-
-go的调度
-go struct能不能比较
-
-可以,也不可以
-
-比如struct例有一个map就不行了,因为map是无法比较的
-
-go中slice、map、function都无法比较
-
-结论:
-
-相同结构,只要成员类型可比较,则能比较
-
-不同结构,如果能相互转化也能比较.前提是成员都是可比较的.
-
-
-
-# select可以用于什么
-
-select是Go中的一个控制结构，类似于switch语句，用于处理异步IO操作。select会监听case语句中channel的读写操作，当case中channel读写操作为非阻塞状态（即能读写）时，将会触发相应的动作。
+select是Go中的一个控制结构，类似于switch语句，用于**处理异步IO操作**。select会监听case语句中channel的读写操作，当case中channel读写操作为非阻塞状态（即能读写）时，将会触发相应的动作。
 
 1. goroutine超时设置，防止goroutine一直执行导致内存不释放等问题。
 2. 判断channel是否已满或空。如实现一个池线程，当channel已被写满，暂无空闲worker在进行读取，进入default，返回一个暂无可分配资源错误。
 
 
 
-context包的用途
-client如何实现长连接
-主协程如何等其余协程完再操作
-实现消息队列（多生产者，多消费者）
-基本排序，哪些是稳定的
-
-快速排序、希尔排序、堆排序、直接选择排序不是稳定的排序算法。
-
-基数排序、冒泡排序、直接插入排序、折半插入排序、归并排序是稳定的排序算法。
 
 
 
 
-tcp与udp区别，udp优点，适用场景
 time-wait的作用
 死锁条件，如何避免
-linux命令，查看端口占用，cpu负载，内存占用，如何发送信号给一个进程
-git文件版本，使用顺序，merge跟rebase
+mysql底层有哪几种实现方式
+channel底层实现
+mysql索引为什么要用B+树？
+mysql语句性能评测？
+服务发现有哪些机制当go服务部署到线上了，发现有内存泄露，该怎么处理
 
->
-> mysql底层有哪几种实现方式
-> channel底层实现
-> java nio和go 区别
-> 读写锁底层是怎么实现的
-> go-micro 微服务架构怎么实现水平部署的，代码怎么实现
-> micro怎么用
-> 怎么做服务发现的
-> mysql索引为什么要用B+树？
-> mysql语句性能评测？
-> 服务发现有哪些机制当go服务部署到线上了，发现有内存泄露，该怎么处理
+# 11、context作用，原理，超时控制
 
-## goalng相关
+**A: golang context的理解，context主要用于父子任务之间的同步取消信号，本质上是一种协程调度的方式。另外在使用context时有两点值得注意：上游任务仅仅使用context通知下游任务不再需要，但不会直接干涉和中断下游任务的执行**，由下游任务自行决定后续的处理操作，也就是说context的取消操作是无侵入的
 
-Q：context作用，原理，超时控制
-
-**A: golang context的理解，context主要用于父子任务之间的同步取消信号，本质上是一种协程调度的方式。另外在使用context时有两点值得注意：上游任务仅仅使用context通知下游任务不再需要，但不会直接干涉和中断下游任务的执****行****，由下游任务自行决定后续的处理操作，也就是说context的取消操作是无侵入的；context是线程安全的，因为context本身是不可变的（immutable），因此可以放心地在多个协程中传递使用。**
-
-**内存方面问题**
+context是线程安全的，因为context本身是不可变的（immutable），因此可以放心地在多个协程中传递使用。
 
 
 
-### 标记-清扫(Mark And Sweep)算法
+# 12、标记-清扫(Mark And Sweep)算法
 
 此算法主要有两个主要的步骤：
 
@@ -656,7 +663,7 @@ gc的过程一共分为四个阶段：
 3. 第二次标记（STW）
 4. 清除（并发）
 
-# go中多态的实现
+# 13、go中多态的实现
 
 Golang中的多态可以通过接口来实现。
 
@@ -664,23 +671,13 @@ Golang中的多态可以通过接口来实现。
 
 
 
-map底层实现机制(无序、底层机制)
-
 slice和链表的区别?面试官想要知道的是:使用场景、优缺点、不同之处、原理、底层结构,从时间复杂度空间复杂度去分析
-
-线程的多种方式?
 
 二叉树、排序二叉树、应用场景?
 
-数据库的四大特性?
 
 
 
-移动互联网
 
-海量用户(高并发、分布式、微服务server mesh服务治理,服务异常、失败的处理(网格计算))
 
-异构系统、服务治理、服务网络(网格能力、集群声明能力) 
-
-grpc
 
