@@ -22,10 +22,10 @@ func search(nums []int, target int) int {
 }
 
 func main() {
-	//input := []int{7,1,5,3,6,4}
+	//input := []int{7, 1, 5, 3, 6, 4}
 	//res := maxProfit(input)
 	input := []int{1, 2, 4, 5, 7}
-	res := search(input, 8)
+	res := search(input, 4)
 	fmt.Println(res)
 }
 
@@ -52,5 +52,28 @@ func sortList(input []int) []int {
 		}
 	}
 	fmt.Println(input)
+	return input
+}
+
+//func main() {
+//	res := RGB([]int{3, 2, 2, 1, 2, 2, 3, 1, 3, 1})
+//	fmt.Println(res)
+//}
+
+func RGB(input []int) []int {
+	var leftIndex int
+	rightIndex := len(input) - 1
+	for i := 0; i <= rightIndex; {
+		if input[i] == 1 {
+			input[i], input[leftIndex] = input[leftIndex], input[i]
+			leftIndex++
+			i++
+		} else if input[i] == 3 {
+			input[i], input[rightIndex] = input[rightIndex], input[i]
+			rightIndex--
+		} else {
+			i++
+		}
+	}
 	return input
 }

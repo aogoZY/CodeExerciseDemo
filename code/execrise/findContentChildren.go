@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 func main() {
-	res := findContentChildren([]int{1, 2, 3}, []int{1,1})
+	res := findContentChildren([]int{1, 2}, []int{1,2,3})
 	fmt.Println(res)
 }
 

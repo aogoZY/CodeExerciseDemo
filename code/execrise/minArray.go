@@ -30,6 +30,6 @@ func minArray2(numbers []int) int {
 }
 
 func main() {
-	res := minArray2([]int{5, 1, 3, 4,4})
+	res := minArray2([]int{5, 1, 4, 4,4})
 	fmt.Println(res)
 }

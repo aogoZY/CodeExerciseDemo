@@ -25,13 +25,14 @@
 - pprof使用实例
 - 度量系统prometheus
 - 日志系统elk
+- map数据结构，带你详解一波
 
 ### 数据库
 
 - [数据库](https://github.com/aogoZY/CodeExerciseDemo/blob/master/summary/%E6%95%B0%E6%8D%AE%E5%BA%93.md)
-
 - [db sql](https://github.com/aogoZY/CodeExerciseDemo/blob/master/summary/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E8%AF%A2sql.md)
 - [db优化](https://github.com/aogoZY/CodeExerciseDemo/blob/master/summary/db%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96.md)
+- 索引原理https://www.cnblogs.com/nxnslc-blog/p/12709913.html
 
 ### Linux
 
@@ -42,7 +43,8 @@
 - [00A-redis安装及使用](https://github.com/aogoZY/CodeExerciseDemo/blob/master/jike-study/redis/00redis%E5%AE%89%E8%A3%85.md)
 - [00B-redis课程导论](https://github.com/aogoZY/CodeExerciseDemo/blob/master/jike-study/redis/00B--%E8%AF%BE%E7%A8%8B%E5%AF%BC%E8%AE%BA.md)
 - [001-redis基础](https://github.com/aogoZY/CodeExerciseDemo/blob/master/jike-study/redis/001-redis%E5%9F%BA%E7%A1%80%E7%AF%87.md)
-- 
+
+  
 
 ### 算法
 
@@ -57,3 +59,5 @@
 ### 其他
 
 - [软件测试](https://github.com/aogoZY/CodeExerciseDemo/blob/master/summary/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95.md)
+
+- dns原理
