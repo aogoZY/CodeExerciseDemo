@@ -61,7 +61,9 @@ HTTPS 并不是新协议，而是让 HTTP 先和 SSL（Secure Sockets Layer）�
 
 #### **三、HTTPS的工作原理**
 
-![HTTP与HTTPS的区别-马海祥博客](http://www.mahaixiang.cn/uploads/allimg/1507/1-150H120343I41.jpg)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200713002243649.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3Njg4MDIz,size_16,color_FFFFFF,t_70)
+
+ ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200713003933992.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3Njg4MDIz,size_16,color_FFFFFF,t_70)
 
 　客户端在使用HTTPS方式与Web服务器通信时有以下几个步骤，如图所示。
 
