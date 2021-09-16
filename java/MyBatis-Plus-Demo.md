@@ -409,9 +409,13 @@ public class MpConfig {
 
 User表中添加字段：
 
-创建时间：create_time
-更新时间：update_time
-实体类添加属性和注解
+- 创建时间：create_time
+
+- 更新时间：update_time
+
+  
+
+  实体类添加属性和注解
 
 ```
 		@TableField(fill = FieldFill.INSERT)
