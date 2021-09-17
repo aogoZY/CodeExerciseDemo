@@ -202,7 +202,7 @@ public class mybatisTest {
 
 ##### 2、插入数据
 
-持久层添加insert方法
+##### 【1】持久层添加insert方法
 
 ```
 public interface IUserDao {
@@ -213,6 +213,318 @@ public interface IUserDao {
     void insertUser(User user);
 }
 ```
+
+##### 【2】配置映射配置文件
+
+```html
+    <!--    插入数据-->
+    <insert id="insertUser" parameterType="cn.aogo.domain.User">
+ insert  into  user(userName,birthday,gender,address) value (#{userName},#{birthday},#{gender},#{address})
+    </insert>
+```
+
+##### 【3】添加测试方法
+
+![image-20210917070459623](/Users/zhouyang/Library/Application Support/typora-user-images/image-20210917070459623.png)
+
+```java
+package cn.aogo.test;
+
+import cn.aogo.dao.IUserDao;
+import cn.aogo.domain.User;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.List;
+
+public class mybatisTest {
+    private InputStream in;
+    private SqlSession sqlSession;
+    private IUserDao userDao;
+
+    @Before
+    public void init() throws IOException {
+//        1、读取配置文件
+        in = Resources.getResourceAsStream("SqlMapConfig.xml");
+//        2、创建sqlSessionFactory的构建对象
+        SqlSessionFactoryBuilder factoryBuilder = new SqlSessionFactoryBuilder();
+//        3、使用构造者创建工厂对象 sqlSessionFactory
+        SqlSessionFactory factory = factoryBuilder.build(in);
+//        4、使用selSessionFactory生产 sqlSession 对象
+        sqlSession = factory.openSession(true);
+//        5、使用sqlSession创建dao接口的代理对象
+        userDao = sqlSession.getMapper(IUserDao.class);
+
+    }
+
+    @After
+    public void destroy() throws Exception {
+        sqlSession.close();
+        in.close();
+    }
+
+
+    @Test
+    public void queryAll() throws IOException {
+        List<User> users = userDao.queryAll();
+        for (User user : users) {
+            System.out.println(user);
+        }
+
+    }
+
+    @Test
+    public void addTest() throws IOException {
+        User user = new User();
+        user.setUserName("aogo");
+        user.setGender(1);
+        user.setBirthday(new Date());
+        user.setAddress("广州");
+
+        Integer affected = userDao.insertUser(user);
+        System.out.println("affected:" + affected);
+
+    }
+}
+
+```
+
+##### 3、更新数据
+
+##### 【1】持久层添加update方法
+
+```
+   //    更新数据
+    Integer updateUser(User user);
+```
+
+##### 【2】配置update的映射配置文件
+
+```
+  <!--    更新数据-->
+    <insert id="updateUser" parameterType="cn.aogo.domain.User">
+            update user set userName =#{userName},birthday =#{birthday},gender =#{gender},address =#{address} where id =#{id}
+    </insert>
+```
+
+##### 【3】添加update测试方法
+
+```
+ //    这里相当于是全量覆盖 如果某列没有set值是会被置为null的
+    @Test
+    public void updateTest() throws IOException {
+        User user = new User();
+        user.setUserName("amao");
+        user.setAddress("北京");
+        user.setBirthday(new Date());
+        user.setId(23L);
+        user.setGender(1);
+
+        Integer affected = userDao.updateUser(user);
+        System.out.println(affected);
+    }
+```
+
+##### 4、删除数据
+
+##### 【1】持久层添加delete方法
+
+```
+   //    删除数据
+    Integer deleteUser(Integer id);
+```
+
+##### 【2】配置delete的映射配置文件
+
+```
+    <!--    删除数据-->
+    <delete id="deleteUser" parameterType="Integer">
+            delete from user where id = #{id}
+    </delete>
+```
+
+##### 【3】添加delete测试方法
+
+```
+ @Test
+    public void deleteTest() throws IOException {
+        Integer affected = userDao.deleteUser(22);
+        System.out.println(affected);
+    }
+```
+
+##### 5、模糊查询
+
+【1】持久层添加findByName方法
+
+```
+    //    根据名字模糊查询
+    List<User> findByName(String name);
+```
+
+【2】配置findByName的映射配置文件
+
+```
+   <!--    根据名字模糊查询-->
+    <select id="findByName" parameterType="String" resultType="cn.aogo.domain.User">
+        select  * from user where userName like #{userName}
+    </select>
+```
+
+【3】添加findByName测试方法
+
+```
+  //    根据名称模糊查询
+    @Test
+    public void findByNameTest() {
+        List<User> userList = userDao.findByName("%星%");
+        for (User user : userList) {
+            System.out.println(user);
+        }
+    }
+```
+
+##### 6、queryVO查询
+
+【1】创建vo类
+
+```
+package cn.aogo.domain;
+
+import java.io.Serializable;
+
+public class QueryVo implements Serializable {
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+}
+```
+
+【2】持久层添加queryByVo的方法
+
+```
+    //    根据vo查询
+    List<User> queryByVo(QueryVo vo);
+```
+
+【3】配置queryByVo的映射配置文件
+
+```
+<!--    根据vo查询-->
+    <select id="queryByVo" parameterType="cn.aogo.domain.QueryVo" resultType="cn.aogo.domain.User">
+   select * from user where userName like #{user.userName}
+    </select>
+```
+
+【4】添加queryByVo测试方法
+
+```
+   //    根据queryVo中查询条件查询
+    @Test
+    public void queryByVo() {
+        User user = new User();
+        user.setUserName("%五%");
+        QueryVo vo = new QueryVo();
+        vo.setUser(user);
+        List<User> userList = userDao.queryByVo(vo);
+        for (User u : userList) {
+            System.out.println(u);
+        }
+    }
+```
+
+
+
+### 三、MyBatis 中的连接池和事务控制
+
+Mybatis 连接池采用的是自己的连接池技术，在 Mybatis 的 SQLMapConfig.xml 配置文件中，通过 <dataSource type="pooled"> 来实现 Mybatis 中连接池的配置。
+
+![image-20210917075722900](/Users/zhouyang/Library/Application Support/typora-user-images/image-20210917075722900.png)
+
+Mybatis 将它自己的数据源 DataSource 分为三类： 
+
+- UNPOOLED：不使用连接池的数据源
+
+- POOLED：使用连接池的数据源
+
+- JNDI：使用 JNDI 实现的数据源
+  相应地，MyBatis 内部分别定义了实现了 java.sql.DataSource 接口的 UnpooledDataSource， PooledDataSource 类来表示 UNPOOLED、POOLED 类型的数据源。 
+
+  
+
+MyBatis 在初始化时，根据<dataSource>的 type 属性来创建相应类型的的数据源 DataSource，即：
+
+type=”POOLED”：MyBatis 会创建 PooledDataSource 
+
+type=”UNPOOLED”  MyBatis 会创建 UnpooledDataSource 
+
+type=”JNDI”：MyBatis 会从 JNDI 服务上查找 DataSource 实例，然后返回使用 
+
+当我们需要创建 SqlSession 对象并需要执行 SQL 语句时，这时候 MyBatis 才会去调用 dataSource 对象 来创建java.sql.Connection对象。也就是说，java.sql.Connection对象的创建一直延迟到执行SQL语句 的时候。
+
+只有当第 4句sqlSession.selectList("findUserById")，才会触发MyBatis 在底层执行下面这个方 法来创建 java.sql.Connection 对象。
+
+只有在要用到的时候，才去获取并打开连接，当我们用完了就再 立即将数据库连接归还到连接池中。 
+![image-20210917080200602](/Users/zhouyang/Library/Application Support/typora-user-images/image-20210917080200602.png)
+
+### 四、Mybatis 的动态 SQL 语句
+
+##### 1、if 标签
+
+##### 【1】编写持久层接口
+
+```
+    //    根据if标签查询
+    List<User> findByCondition(User user);
+```
+
+##### 【2】持久层映射配置
+
+```html
+    <!--    根据条件查询 if标签-->
+    <select id="findByCondition" parameterType="cn.aogo.domain.User" resultType="cn.aogo.domain.User">
+        select * from user where 1=1
+        <if test="userName!=null">
+            and userName = #{userName}
+        </if>
+    </select>
+```
+
+##### 【3】测试类
+
+```
+    //    根据if标签做条件查询
+    @Test
+    public void queryByIfCondition() {
+        User user = new User();
+        user.setUserName("aogou");
+
+        List<User> userList = userDao.findByCondition(user);
+        for (User u : userList) {
+            System.out.println(u);
+        }
+    }
+
+```
+
+![image-20210917083548053](/Users/zhouyang/Library/Application Support/typora-user-images/image-20210917083548053.png)
+
+##### 2、where>标签
 
 
 
@@ -253,10 +565,11 @@ pom.xm将mysql-connector-java换为8.0.23：
 
 ##### 3、Could not find resource com/XXX/dao/IUserDao.xml
 
+法一：
 
+直接IUserDao.xml将放在resources文件夹下，同时修改为制定配置为
 
 ```
-直接IUserDao.xml将放在resources文件夹下，同时修改为制定配置为
     <!--指定映射配置文件的位置，映射配置文件指的是每个dao独立的配置文件-->
     <mappers>
         <mapper resource="IUserDao.xml"/>
@@ -267,6 +580,16 @@ pom.xm将mysql-connector-java换为8.0.23：
 ![image-20210915084744099](/Users/zhouyang/Library/Application Support/typora-user-images/image-20210915084744099.png)
 
 https://blog.csdn.net/u010648555/article/details/70880425
+
+法二：修改SqlMapConfig.xml的mappers的配置文件
+
+```
+    <mappers>
+        <mapper resource="cn/aogo/dao/IUserDao.xml"/>
+    </mappers>
+```
+
+![image-20210917065817969](/Users/zhouyang/Library/Application Support/typora-user-images/image-20210917065817969.png)
 
 ##### 4、log4j:WARN Please initialize the log4j system properly.
 
@@ -309,28 +632,13 @@ Mybatis默认情况下开启的是手动提交， 我们需要开启自动提交
 
 ![image-20210916083453026](/Users/zhouyang/Library/Application Support/typora-user-images/image-20210916083453026.png)
 
-6、插入空指针
+##### 6、插入空指针
 
-```
-    @Before
-    public void init() throws IOException {
-//        1、读取配置文件
-         in = Resources.getResourceAsStream("SqlMapConfig.xml");
-//        2、创建sqlSessionFactory的构建对象
-        SqlSessionFactoryBuilder factoryBuilder = new SqlSessionFactoryBuilder();
-//        3、使用构造者创建工厂对象 sqlSessionFactory
-        SqlSessionFactory factory = factoryBuilder.build(in);
-//        4、使用selSessionFactory生产 sqlSession 对象
-         sqlSession = factory.openSession();
-//        5、使用sqlSession创建dao接口的代理对象
-         userDao = sqlSession.getMapper(IUserDao.class);
+![image-20210917070039993](/Users/zhouyang/Library/Application Support/typora-user-images/image-20210917070039993.png)
 
-    }
-```
+解决方案：在init函数不要加类名
 
-
-
-对比一下
+![image-20210917070202515](/Users/zhouyang/Library/Application Support/typora-user-images/image-20210917070202515.png)
 
 ```
 public class mybatisTest {

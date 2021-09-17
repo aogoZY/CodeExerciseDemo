@@ -636,7 +636,7 @@ public void insertFill(MetaObject metaObject) {
 //    }
 ```
 
-由于mmybaisplus 3.2版本以上，移除了PerformanceInterceptor sql性能分析插件，所以我们用了MyBatis-Plus官网推荐的方式。
+由于mybaisplus 3.2版本以上，移除了PerformanceInterceptor sql性能分析插件，所以我们用了MyBatis-Plus官网推荐的方式。
 
 pom.xml新加配置。
 
