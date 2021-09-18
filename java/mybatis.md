@@ -364,14 +364,14 @@ public class mybatisTest {
 
 ##### 5、模糊查询
 
-【1】持久层添加findByName方法
+##### 【1】持久层添加findByName方法
 
 ```
     //    根据名字模糊查询
     List<User> findByName(String name);
 ```
 
-【2】配置findByName的映射配置文件
+##### 【2】配置findByName的映射配置文件
 
 ```
    <!--    根据名字模糊查询-->
@@ -380,7 +380,7 @@ public class mybatisTest {
     </select>
 ```
 
-【3】添加findByName测试方法
+##### 【3】添加findByName测试方法
 
 ```
   //    根据名称模糊查询
@@ -395,7 +395,7 @@ public class mybatisTest {
 
 ##### 6、queryVO查询
 
-【1】创建vo类
+##### 【1】创建vo类
 
 ```
 package cn.aogo.domain;
@@ -415,14 +415,14 @@ public class QueryVo implements Serializable {
 }
 ```
 
-【2】持久层添加queryByVo的方法
+##### 【2】持久层添加queryByVo的方法
 
 ```
     //    根据vo查询
     List<User> queryByVo(QueryVo vo);
 ```
 
-【3】配置queryByVo的映射配置文件
+##### 【3】配置queryByVo的映射配置文件
 
 ```
 <!--    根据vo查询-->
@@ -431,7 +431,7 @@ public class QueryVo implements Serializable {
     </select>
 ```
 
-【4】添加queryByVo测试方法
+##### 【4】添加queryByVo测试方法
 
 ```
    //    根据queryVo中查询条件查询
@@ -526,7 +526,141 @@ type=”JNDI”：MyBatis 会从 JNDI 服务上查找 DataSource 实例，然后
 
 ##### 2、where>标签
 
+##### 【1】编写持久层接口
 
+```
+  //    根据where标签查询
+    List<User> findByWhereCondition(User user);
+```
+
+
+
+##### 【2】持久层映射配置
+
+```
+ <!--    根据条件查询 where标签-->
+    <select id="findByWhereCondition" parameterType="cn.aogo.domain.User" resultType="cn.aogo.domain.User">
+        select * from user
+        <where>
+            <if test="userName!=null">
+                and userName =#{userName}
+            </if>
+        </where>
+    </select>
+
+```
+
+##### 【3】测试类
+
+```
+//    根据where 标签做条件查询
+    @Test
+    public void queryByWhereCondition() {
+        User user = new User();
+        user.setUserName("星期五");
+        List<User> userList = userDao.findByWhereCondition(user);
+        for (User u : userList) {
+            System.out.println(u);
+        }
+    }
+```
+
+##### 3、foreach标签
+
+##### 【1】在queryVo中加入一个list做封装函数
+
+```
+public class QueryVo implements Serializable {
+    private List<Integer> ids;
+    public List<Integer> getIds() {
+        return ids;
+    }
+    public void setIds(List<Integer> ids) {
+        this.ids = ids;
+    }
+}
+```
+
+##### 【2】编写持久层接口
+
+```
+  //    根据foreach标签查询
+    List<User> findByForeachCondition(QueryVo vo);
+```
+
+##### 【3】持久层映射配置
+
+- foreach用于遍历集合，属性：
+
+  - collection：代表要遍历的集合元素
+  - open：代表语句的开始部分
+  - close：代表结束部分
+  - item：代表遍历集合的每个元素，生成的变量名
+  - sperator：代表分隔符
+
+  ```
+      <!--    根据条件查询 foreach标签-->
+      <select id="findByForeachCondition" parameterType="cn.aogo.domain.QueryVo" resultType="cn.aogo.domain.User">
+          select * from user
+          <where>
+              <if test="ids!=null and ids.size()>0">
+                  <foreach collection="ids" open="and id in (" close=")" item="id" separator=",">
+                      #{id}
+  
+                  </foreach>
+              </if>
+          </where>
+      </select>
+  ```
+
+【4】测试类
+
+```
+  //    根据foreach 标签做条件查询
+    @Test
+    public void queryByForeachCondition() {
+        QueryVo vo = new QueryVo();
+        List<Integer> ids = new ArrayList<Integer>();
+        ids.add(1);
+        ids.add(2);
+        ids.add(3);
+        vo.setIds(ids);
+        List<User> users = userDao.findByForeachCondition(vo);
+        for (User user : users) {
+            System.out.println(user);
+        }
+    }
+```
+
+
+
+# 五、Mybatis 多表查询
+
+## 1、数据准备
+
+```
+CREATE TABLE user
+(
+	id int(11) AUTO_INCREMENT  NOT NULL COMMENT '主键ID',
+	username VARCHAR(30) NULL DEFAULT NULL COMMENT '姓名',
+	birthday datetime DEFAULT NULL COMMENT '生日',
+	gender INT  DEFAULT NULL COMMENT '性别',
+	address VARCHAR(50) NULL DEFAULT NULL COMMENT '地址',
+
+	PRIMARY KEY (id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+
+```
+CREATE TABLE `account` (
+  `ID` int(11) NOT NULL COMMENT '编号',
+  `UID` int(11) default NULL COMMENT '用户编号',
+  `MONEY` double default NULL COMMENT '金额',
+  PRIMARY KEY  (`ID`),
+  KEY `FK_Reference_8` (`UID`),
+  CONSTRAINT `FK_Reference_8` FOREIGN KEY (`UID`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
 
 
 
@@ -664,3 +798,12 @@ public class mybatisTest {
     }
 ```
 
+##### 7、foreign key constraint 'FK_Reference_8' are incompatible
+
+```
+关联表的主键类型得保持一致
+```
+
+![image-20210918082322180](/Users/zhouyang/Library/Application Support/typora-user-images/image-20210918082322180.png)
+
+![image-20210918082344892](/Users/zhouyang/Library/Application Support/typora-user-images/image-20210918082344892.png)
