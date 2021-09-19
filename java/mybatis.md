@@ -662,7 +662,192 @@ CREATE TABLE `account` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
+创建实体类
 
+```
+package cn.aogo.domain;
+
+import java.io.Serializable;
+
+public class Account implements Serializable {
+    private Integer id;
+    private Long uid;
+    private double money;
+    
+    @Override
+    public String toString() {
+        return "{Account:" + "id:" + id + ", uid:" + uid + ", money" + money + " }";
+    }
+}
+
+```
+
+## 2、一对一查询（通过子类方式）
+
+eg：需要查询所有账户信息及账户对应的用户信息，包括用户名及地址。
+
+#### 【1】定义accountUser类
+
+为了能够封装SQL的查询结果，accountUser类继承至account，同时为了包含用户信息需要添加user类的username和address属性。
+
+```
+public class AccountUser extends Account {
+    private String username;
+    private String address;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "AccountUser:{username:" + username + ", address" + address + "}";
+    }
+}
+
+```
+
+
+
+#### 【2】编写持久层接口
+
+新建IAccountDao的接口文件
+
+```
+public interface IAccountDao {
+    //    查询所有用账户信息，并带有用户名称和地址
+    List<AccountUser> findAll();
+}
+```
+
+
+
+#### 【3】持久层映射配置
+
+新增account的配置文件，IAccountDao.xml
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.aogo.dao.IAccountDao">
+    <select id="findAll" resultType="cn.aogo.domain.AccountUser">
+        select a.*,u.username,u.address from account a,user u where a.uid=u.id
+    </select>
+</mapper>
+```
+
+在SqlMapConfig.xml引入IAccountDao.xml
+
+```
+ <mappers>
+        <!--        <mapper resource="IUserDao.xml"/>-->
+        <!--        user表的配置-->
+        <mapper resource="cn/aogo/dao/IUserDao.xml"/>
+        <!--        account表的配置-->
+        <mapper resource="cn/aogo/dao/IAccountDao.xml"/>
+    </mappers>
+
+```
+
+目录结构如图：![image-20210919081525244](/Users/zhouyang/Library/Application Support/typora-user-images/image-20210919081525244.png)
+
+
+
+#### 【4】编写测试类
+
+```
+    //    查询所有account信息及其对应的用户名和地址
+    @Test
+    public void queryAccountAllIncludeUser() {
+        List<AccountUser> accountUserList = accountDao.findAll();
+        for (AccountUser accountUser : accountUserList) {
+            System.out.println(accountUser);
+        }
+    }
+```
+
+![image-20210919081709735](/Users/zhouyang/Library/Application Support/typora-user-images/image-20210919081709735.png)
+
+## 3、一对一查询（通过建立实体类方式）
+
+通过建立实体类的方式，使用 resultMap，定义专门的 resultMap 用于映射一对一查询结果，所以可以在 Account 类中加入 User 类的对象作为 Account 类的一个属性。
+
+【1】修改Account实体类，添加user对象作为Account类的一个属性
+
+```
+public class Account implements Serializable {
+    private User user;
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+}
+```
+
+【2】修改IAccountDao中的接口方法
+
+```
+    //查询所有账户信息及其用户名称和地址 使用实体类的方式 account类包含了user类
+    List<Account> findAllByBean();
+```
+
+【3】重新定义 IAccountDao.xml 文件
+
+```
+ <select id="findAllByBean" resultMap="accountUserMap">
+        select u.*,a.id as aid,a.uid,a.money from user u,account a where u.id=a.uid
+    </select>
+
+    <resultMap id="accountUserMap" type="cn.aogo.domain.Account">
+        <id property="id" column="aid" ></id>
+        <result property="money" column="money"></result>
+        <result property="uid" column="uid"></result>
+
+        <!--        一对一的关系映射 配置封装user的内容 -->
+        <association property="user" column="uid" javaType="cn.aogo.domain.User">
+            <id column="id" property="id"></id>
+            <result property="userName" column="userName"></result>
+            <result property="address" column="address"></result>
+            <result property="gender" column="gender"></result>
+            <result property="birthday" column="birthday"></result>
+        </association>
+    </resultMap>
+
+```
+
+【4】编写测试类
+
+```
+
+    //    查询所有account信息及其对应用户地址 使用account类包含user类的形式
+    @Test
+    public void findAllByBean() {
+        List<Account> accountList = accountDao.findAllByBean();
+        for (Account account : accountList) {
+            System.out.println(account);
+            System.out.println(account.getUser());
+        }
+    }
+```
+
+![image-20210919090540548](/Users/zhouyang/Library/Application Support/typora-user-images/image-20210919090540548.png)
 
 ### 踩坑记
 
