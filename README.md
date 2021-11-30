@@ -20,7 +20,7 @@
 
 - [book09-刻意练习：如何从新手到大师](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book09-%E5%88%BB%E6%84%8F%E7%BB%83%E4%B9%A0%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BB%8E%E6%96%B0%E6%89%8B%E5%88%B0%E5%A4%A7%E5%B8%88.md)
 
-- 
+- [book10-博弈论](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book10-%E5%8D%9A%E5%BC%88%E8%AE%BA.md)
 
   
 
