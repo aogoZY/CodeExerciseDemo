@@ -24,7 +24,9 @@
 
 - [book11-我承认我不曾历经沧桑](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book11-%E6%88%91%E6%89%BF%E8%AE%A4%E6%88%91%E4%B8%8D%E6%9B%BE%E5%8E%86%E7%BB%8F%E6%B2%A7%E6%A1%91.md)
 
-- [book12-]()
+- [book12-李诞脱口秀工作手册](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book12-%E6%9D%8E%E8%AF%9E%E8%84%B1%E5%8F%A3%E7%A7%80%E5%B7%A5%E4%BD%9C%E6%89%8B%E5%86%8C.md)
+
+- [book13-82年生的金智英](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book13-82%E5%B9%B4%E7%94%9F%E7%9A%84%E9%87%91%E6%99%BA%E8%8B%B1.md)
 
   
 
