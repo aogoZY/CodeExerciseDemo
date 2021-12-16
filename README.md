@@ -34,7 +34,7 @@
 
 - [book16-送你一颗子弹](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book16-%E9%80%81%E4%BD%A0%E4%B8%80%E9%A2%97%E5%AD%90%E5%BC%B9.md)
 
-- [book17-把自己当回事儿]()
+- [book17-把自己当回事儿](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book17-%E6%8A%8A%E8%87%AA%E5%B7%B1%E5%BD%93%E5%9B%9E%E4%BA%8B%E5%84%BF.md)
 
   
 
