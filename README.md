@@ -32,7 +32,9 @@
 
 - [book15-见识](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book15-%E8%A7%81%E8%AF%86.md)
 
-- [book16-送你一颗子弹]()
+- [book16-送你一颗子弹](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book16-%E9%80%81%E4%BD%A0%E4%B8%80%E9%A2%97%E5%AD%90%E5%BC%B9.md)
+
+- [book17-把自己当回事儿]()
 
   
 
