@@ -1,4 +1,4 @@
-此文件夹用于记录我的日常学习内容。包括但不仅限于平时读的书、做的题、面经整理、代码demo等。
+Keep Moving
 
 ### book list 100
 
@@ -36,7 +36,11 @@
 
 - [book17-把自己当回事儿](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book17-%E6%8A%8A%E8%87%AA%E5%B7%B1%E5%BD%93%E5%9B%9E%E4%BA%8B%E5%84%BF.md)
 
-- 
+- [book-18-海边的房间](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book18-%E6%B5%B7%E8%BE%B9%E7%9A%84%E6%88%BF%E9%97%B4.md)
+
+- [book19-山月记](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book18-%E6%B5%B7%E8%BE%B9%E7%9A%84%E6%88%BF%E9%97%B4.md)
+
+- [book20-俗女养成记](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book20-%E4%BF%97%E5%A5%B3%E5%85%BB%E6%88%90%E8%AE%B0.md)
 
   
 
