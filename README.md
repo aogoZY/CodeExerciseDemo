@@ -23,9 +23,9 @@ Keep Moving
 - [book19-山月记](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book18-%E6%B5%B7%E8%BE%B9%E7%9A%84%E6%88%BF%E9%97%B4.md)
 - [book20-俗女养成记](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book20-%E4%BF%97%E5%A5%B3%E5%85%BB%E6%88%90%E8%AE%B0.md)
 - [book21-阿勒泰的角落](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book21-%E9%98%BF%E5%8B%92%E6%B3%B0%E7%9A%84%E8%A7%92%E8%90%BD.md)
-- [book22-照着做，你也能成为架构师](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book22-%E7%85%A7%E7%9D%80%E5%81%9A%EF%BC%8C%E4%BD%A0%E4%B9%9F%E8%83%BD%E6%88%90%E4%B8%BA%E6%9E%B6%E6%9E%84%E5%B8%88%E3%80%82.md)
+- [book22-照着做，你也能成为架构师](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book22-%E7%85%A7%E7%9D%80%E5%81%9A%EF%BC%8C%E4%BD%A0%E4%B9%9F%E8%83%BD%E6%88%90%E4%B8%BA%E6%9E%B6%E6%9E%84%E5%B8%88.md)
 - [book23-进击的智人](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book23-%E8%BF%9B%E5%87%BB%E7%9A%84%E6%99%BA%E4%BA%BA.md)
-- [book24-]()
+- [book24-](https://github.com/aogoZY/CodeExerciseDemo/blob/master/books/book24-%E4%B9%9F%E8%AE%B8%E4%BD%A0%E8%AF%A5%E6%89%BE%E4%B8%AA%E4%BA%BA%E8%81%8A%E8%81%8A.md)
 
 ### GOLANG
 
